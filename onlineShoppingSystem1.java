@@ -20,7 +20,7 @@ class ShoppingCart {
             System.out.println("Items in the cart:");
             for (Vector<Object> product : cart) {
                 System.out.println(product.get(0) + " - $" + product.get(1));
-                totalAmount += (double) product.get(1);
+                totalAmount += (int) product.get(1);   //  handeled the exceptions
             }
             System.out.println("Total amount: $" + totalAmount);
 
@@ -196,7 +196,7 @@ class UserAuthentication extends Product {
                         }
                         if (selectedProduct != null) {
                             productName = (String) selectedProduct.get(0);
-                            productPrice = (double) selectedProduct.get(1);
+                            productPrice = (int) selectedProduct.get(1);  // handeled exception 
                             productId = (int) selectedProduct.get(2);
                             System.out.println("Product selected: " + productName);
                             System.out.println("Price: " + productPrice);
