@@ -6,4 +6,3 @@ this my first github repositry
 i am facing an issue
 
 # IN THIS repo u learn all about the java
-# abcdd
