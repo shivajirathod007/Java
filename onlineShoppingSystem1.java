@@ -20,7 +20,7 @@ class ShoppingCart {
             System.out.println("Items in the cart:");
             for (Vector<Object> product : cart) {
                 System.out.println(product.get(0) + " - $" + product.get(1));
-                totalAmount += (int) product.get(1);   //  handeled the exceptions
+                totalAmount += (int) product.get(1); // handeled the exceptions
             }
             System.out.println("Total amount: $" + totalAmount);
 
@@ -83,11 +83,16 @@ class UserAuthentication extends Product {
     Scanner sc = new Scanner(System.in);
 
     int showProduct() {
-        System.out.println("product as per the [name,price,productId]");
-        System.out.println("product1: " + product1);
-        System.out.println("product2: " + product2);
-        System.out.println("product3: " + product3);
-        System.out.println("product4: " + product4);
+        // System.out.println("product as per the [name,price,productId]");
+        // System.out.println("product1: " + product1);
+        // System.out.println("product2: " + product2);
+        // System.out.println("product3: " + product3);
+        // System.out.println("product4: " + product4);
+        System.out.printf("\tName\tPrice\tProductID\n");
+        System.out.printf("\t%s\t%d\t%d\n", product1.elementAt(0), product1.elementAt(1), product1.elementAt(2));
+        System.out.printf("\t%s\t%d\t%d\n", product2.elementAt(0), product2.elementAt(1), product2.elementAt(2));
+        System.out.printf("\t%s\t%d\t%d\n", product3.elementAt(0), product3.elementAt(1), product3.elementAt(2));
+        System.out.printf("\t%s\t%d\t%d\n", product4.elementAt(0), product4.elementAt(1), product4.elementAt(2));
 
         return 0;
     }
@@ -196,7 +201,7 @@ class UserAuthentication extends Product {
                         }
                         if (selectedProduct != null) {
                             productName = (String) selectedProduct.get(0);
-                            productPrice = (int) selectedProduct.get(1);  // handeled exception 
+                            productPrice = (int) selectedProduct.get(1); // handeled exception
                             productId = (int) selectedProduct.get(2);
                             System.out.println("Product selected: " + productName);
                             System.out.println("Price: " + productPrice);
