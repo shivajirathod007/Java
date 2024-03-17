@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.Console;
 
 class ShoppingCart {
     private List<Vector<Object>> cart; // List to store products in the cart
@@ -41,16 +42,14 @@ class Product extends ShoppingCart {
         try {
             final String os = System.getProperty("os.name");
             if (os.contains("Windows")) {
-                // For Windows
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
                 // Runtime.getRuntime().exec("cls"); --> not working due to the
                 // untraced(unavalible) file
             } else {
-                // For UNIX-based systems
                 Runtime.getRuntime().exec("clear");
             }
         } catch (final Exception e) {
-            // Handle exceptions
+            // Handled exceptions
             System.out.println("Error while clearing console: " + e.getMessage());
         }
     }
@@ -119,13 +118,19 @@ class UserAuthentication extends Product {
         Random random = new Random();
         uid = random.nextInt(999999) + 1;
         System.out.println("Your UID is: " + uid);
+        Console console = System.console();
+        if (console == null) {
+            System.out.println("Console is not available");
+            System.exit(1);
+        }
 
         while (true) {
-            System.out.print("Enter the password: ");
-            Password = sc.nextLine();
 
-            System.out.print("Enter the password again to verify: ");
-            String vPass = sc.nextLine();
+            // System.out.print("Enter the password: ");
+            Password = console.readLine("enter the password: ");
+
+            // System.out.print("Enter the password again to verify: ");
+            String vPass = console.readLine("enter the password to verify: ");
 
             if (Password.equals(vPass)) {
                 System.out.println("Password matched. Registration successful!");
