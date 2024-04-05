@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 interface AdminAccess {
-    void adminLogin();
+    boolean adminLogin();
 }
 
 class Data {
@@ -124,49 +124,17 @@ class Quiz extends Data implements AdminAccess {
     List<Question> questions;
     int score;
 
-    // Method implementation for adminLogin()
-    public void adminLogin() {
-        clearConsole();
-        System.out.println("Admin login");
-
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.println("Enter Name");
-            String adname = scanner.next();
-
-            // Define the correct password
-            String correctPassword = "2345";
-
-            // Loop until the correct password is entered or user chooses to exit
-            while (true) {
-                System.out.println("Enter admin's password:");
-                String inputPassword = scanner.next(); // Read the password input from the user
-
-                // Check if the input password matches the correct password
-                if (inputPassword.equals(correctPassword)) {
-                    System.out.println("Password matched");
-                    System.out.println("**Welcome," + adname + "!");
-                    break; // Exit the loop if the password is correct
-                } else {
-                    System.out.println("Incorrect password. Access denied!");
-                    System.out.println("Choose an option:");
-                    System.out.println("1. Re-enter the password");
-                    System.out.println("2. Go back to options");
-
-                    int option = scanner.nextInt();
-                    if (option == 2) {
-                        return; // Go back to options
-                    }
-                }
-            }
-        }
+    public static void clearBuffer1(Scanner scanner) {
+        scanner.nextLine(); // Read and discard any remaining input
     }
 
     public void addQuestion() {
         clearConsole();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the number of questions you want to add:");
-        int numQuestions = scanner.nextInt();
-        scanner.nextLine();
+        // int numQuestions = scanner.nextInt();
+        int numQuestions = Integer.parseInt(scanner.nextLine());
+        // scanner.nextLine(); // Consume newline character
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("quiz.txt", true));
             for (int i = 0; i < numQuestions; i++) {
@@ -183,8 +151,9 @@ class Quiz extends Data implements AdminAccess {
                 }
 
                 System.out.println("Enter the correct option number (1-4):");
-                int answer = scanner.nextInt() - 1;
-                scanner.nextLine(); // Consume newline character
+                // int answer = scanner.nextInt() - 1;
+                int answer = Integer.parseInt((scanner.nextLine())) - 1;
+                // scanner.nextLine(); // Consume newline character
                 writer.write(String.valueOf(answer));
                 writer.newLine();
             }
@@ -195,7 +164,8 @@ class Quiz extends Data implements AdminAccess {
         } catch (NumberFormatException e) {
             System.out.println("Error in this file: " + e.getMessage());
         }
-        scanner.close();
+        // scanner.nextLine();
+        // scanner.close();
     }
 
     @SuppressWarnings("resource")
@@ -210,14 +180,91 @@ class Quiz extends Data implements AdminAccess {
             System.out.println((i + 1) + ". " + questions.get(i).prompt);
         }
         System.out.print("Enter the index of the question to remove: ");
-        int index = scanner.nextInt();
+        // int index = scanner.nextInt();
+        int index = Integer.parseInt(scanner.nextLine());
         if (index >= 1 && index <= questions.size()) {
             questions.remove(index - 1);
             System.out.println("Question removed successfully.");
         } else {
             System.out.println("Invalid index.");
         }
-        scanner.close();
+        // scanner.nextLine(); // Consume newline character
+        // scanner.close();
+    }
+
+    // Method implementation for adminLogin()
+    @SuppressWarnings("resource")
+    public boolean adminLogin() {
+        clearConsole();
+        Scanner scanner1 = new Scanner(System.in);
+        try {
+            System.out.println("Enter Name");
+            String adname = scanner1.nextLine();
+
+            // Define the correct password
+            String correctPassword = "2345";
+
+            // Loop until the correct password is entered or user chooses to exit
+            while (true) {
+                System.out.println("Enter admin's password:");
+                String inputPassword = scanner1.nextLine(); // Read the password input from the user
+
+                // Check if the input password matches the correct password
+                if (inputPassword.equals(correctPassword)) {
+                    System.out.println("Password matched");
+                    System.out.println("**Welcome," + adname + "!");
+                    int ch1;
+                    // Exit the loop if the password is correct
+                    do {
+
+                        System.out.println("1. add question in the file \n 2. remove question \n 3. exit");
+                        System.out.println("enter your choice: ");
+                        ch1 = Integer.parseInt(scanner1.nextLine());
+
+                        switch (ch1) {
+                            case 1:
+                                addQuestion();
+
+                                break;
+                            case 2:
+                                removeQuestion();
+
+                                break;
+                            case 3:
+                                System.out.print("hit enter to exit....");
+
+                                break;
+                            default:
+
+                                System.out.println("invalid option");
+                                break;
+                        }
+
+                    } while (ch1 != 3);
+                    clearBuffer1(scanner1);
+                    // scanner1.close();
+                    return true;
+                } else {
+                    System.out.println("Incorrect password. Access denied!");
+                    System.out.println("Choose an option:");
+                    System.out.println("1. Re-enter the password");
+                    System.out.println("2. Go back to options");
+                    // int option = scanner1.nextInt();
+                    int option = Integer.parseInt(scanner1.nextLine());
+                    if (option == 2) {
+                        return false; // User chooses to go back to options
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+
+            // scanner1.close(); // Close the scanner1
+        }
+
+        return false;
     }
 
     // Constructor for Quiz class
@@ -228,8 +275,8 @@ class Quiz extends Data implements AdminAccess {
 
     // Method for running the quiz
     // Method to clear the input stream
-    private static void clearBuffer(Scanner scanner) {
-        scanner.nextLine(); // Read and discard any remaining input
+    void clearBuffer(Scanner scanner1) {
+        scanner1.nextLine(); // Read and discard any remaining input
     }
 
     // Method to run the quiz
@@ -264,6 +311,9 @@ class Quiz extends Data implements AdminAccess {
 }
 
 public class JAVAMICRO extends Data {
+    // Define a Scanner object as a class variable
+    private static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) throws InterruptedException {
         Data d1 = new Data();
         d1.clearConsole();
@@ -272,9 +322,8 @@ public class JAVAMICRO extends Data {
         List<Question> questions = readQuestionsFromFile();
         Quiz q1 = new Quiz(questions);
 
-        Scanner sc = new Scanner(System.in);
         try {
-            while (true) {
+            do {
                 // Display menu options
                 System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Welcome to the Quiz!!!!!!!!!!!!!!!!!!!!!!!");
                 System.out.println("1. User Register");
@@ -283,14 +332,8 @@ public class JAVAMICRO extends Data {
                 System.out.println("4. Exit");
 
                 System.out.print("Enter your choice: ");
-                if (sc.hasNextInt()) {
-                    ch = sc.nextInt();
-                    // Rest of the code
-                } else {
-                    System.out.println("Invalid input! Please enter a number.");
-                    sc.nextLine(); // Consume the entire line of input, discarding it
-                    continue; // Continue to the next iteration of the loop
-                }
+                // ch = scanner.nextInt();
+                ch = Integer.parseInt(scanner.nextLine());
 
                 // Process user choice
                 switch (ch) {
@@ -310,24 +353,26 @@ public class JAVAMICRO extends Data {
                         q1.adminLogin();
                         break;
                     case 4:
-                        System.out.println("Exiting...");
                         return; // Exit the method (and program) if user chooses to exit
                     default:
                         System.out.println("Invalid choice! Please enter a number between 1 and 4.");
                         break;
                 }
-            }
+            } while (ch != 4);
         } catch (InputMismatchException e) {
             System.out.println("Invalid input! Please enter a valid number.");
-            sc.nextLine(); // Consume invalid input
+            // scanner.nextLine(); // Consume invalid input
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-        } finally {
-            sc.close(); // Ensure scanner is closed even if an exception occurs
+            // scanner.nextLine();
         }
-    }
 
-    private static List<Question> readQuestionsFromFile() {
+        // Close the scanner after the main method ends
+        // scanner.close();
+    }
+    // Other methods remain unchanged
+
+    public static List<Question> readQuestionsFromFile() {
         List<Question> questions = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("quiz.txt"))) {
             String line;
@@ -337,7 +382,11 @@ public class JAVAMICRO extends Data {
                 for (int i = 0; i < 4; i++) {
                     options[i] = reader.readLine();
                 }
-                int answer = Integer.parseInt(reader.readLine());
+                int answer = 0; // Default value
+                String answerLine = reader.readLine();
+                if (!answerLine.isEmpty()) {
+                    answer = Integer.parseInt(answerLine);
+                }
                 questions.add(new Question(prompt, options, answer));
             }
         } catch (IOException e) {
@@ -347,4 +396,5 @@ public class JAVAMICRO extends Data {
         }
         return questions;
     }
+
 }
