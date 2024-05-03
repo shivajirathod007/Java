@@ -15,7 +15,7 @@ public class syncrhoniz {
         A ThreadA = new A(p);
         B ThreadB = new B(p);
         ThreadA.start();
-        // ThreadA.join(); ----> this alternative sultion for the stop the anonymous
+        // ThreadA.join(); // ----> this alternative sultion for the stop the anonymous
         // output or the behviure while using the thread
         ThreadB.start();
     }
@@ -42,6 +42,8 @@ class A extends Thread { // created the thread class
 
     public void run() {
         p.printSomething('*'); // calling the method from another class
+        System.out.println("hiii i am shiva");
+
     }
 }
 
@@ -54,5 +56,6 @@ class B extends Thread {
 
     public void run() {
         p.printSomething('+');
+        System.out.println("hii mN");
     }
 }
